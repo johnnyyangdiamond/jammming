@@ -34,6 +34,7 @@ const Track = (props) => {
 
   return (
     <div className="Track">
+      <img src={props.track.image} alt={props.track.name} height="50" width="50" />
       <div className="Track-information">
         <h3>{props.track.name}</h3>
         <p>
