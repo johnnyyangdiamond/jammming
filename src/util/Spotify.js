@@ -83,9 +83,6 @@ const redirectUri = 'http://localhost:3000/'; // Have to add this to your accept
 let accessToken;
 
 const Spotify = {
-  printImages(tracks){
-    tracks.forEach(track => console.log(track.album.images[0].url));
-  },
 
   getAccessToken() {
     if (accessToken) {
@@ -118,7 +115,7 @@ const Spotify = {
       if (!jsonResponse.tracks) {
         return [];
       }
-      //Spotify.printImages(jsonResponse.tracks.items);
+
       return jsonResponse.tracks.items.map(track => ({
         id: track.id,
         name: track.name,
@@ -126,6 +123,7 @@ const Spotify = {
         album: track.album.name,
         uri: track.uri,
         image: track.album.images[0].url,
+        previewUrl: track.preview_url,
       }));
     });
   },
