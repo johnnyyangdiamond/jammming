@@ -38,6 +38,26 @@ npm start or yarn start
 
 7. **Save Playlist**: To save your playlist to your Spotify account, click the "SAVE TO SPOTIFY" button. It will prompt you to confirm the action.
 
+## Known Issues
+
+### No Audio Preview On Some Tracks
+
+Description: Some tracks dont play sound because the spotify api did not fetch an audio preview for that specific track
+
+Steps to Reproduce:
+
+1. Search a song
+2. Click on all the songs and there will be a few that don't have audio
+
+### Search Does Not Work The First Time
+
+Description: The first time a song is searched, the tracks will show for a split second and disappear. The search works fine after that.
+
+Steps to Reproduce:
+
+1. Refresh browser
+2. Search a song
+
 ## Technologies Used
 
 - React: JavaScript library for building user interfaces.

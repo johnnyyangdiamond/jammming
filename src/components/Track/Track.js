@@ -1,100 +1,19 @@
-/*
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./Track.css";
 
 const Track = (props) => {
-  const addTrack = useCallback(
-    (event) => {
-      props.onAdd(props.track);
-    },
-    [props.onAdd, props.track]
-  );
+  const { track, onAdd, isRemoval, onRemove, currentlyPlaying, setCurrentlyPlaying, currentSide, setCurrentSide } = props;
 
-  const removeTrack = useCallback(
-    (event) => {
-      props.onRemove(props.track);
-    },
-    [props.onRemove, props.track]
-  );
+  const addTrack = useCallback(() => {
+    onAdd(track);
+  }, [onAdd, track]);
+
+  const removeTrack = useCallback(() => {
+    onRemove(track);
+  }, [onRemove, track]);
 
   const renderAction = () => {
-    if (props.isRemoval) {
-      return (
-        <button className="Track-action" onClick={removeTrack}>
-          -
-        </button>
-      );
-    }
-    return (
-      <button className="Track-action" onClick={addTrack}>
-        +
-      </button>
-    );
-  };
-
-  const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  function handlePlayPreview(previewUrl) {
-    if (audioRef.current !== null) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    } else {
-      const audio = new Audio(previewUrl);
-      audio.play();
-      audioRef.current = audio;
-      setIsPlaying(true);
-    }
-  }
-
-  return (
-    <div className="Track">
-      <img
-        src={props.track.image}
-        alt={props.track.name}
-        height="50"
-        width="50"
-        onClick={() => handlePlayPreview(props.track.previewUrl)}
-        style={{ cursor: "pointer" }}
-      />
-      <div className="Track-information">
-        <h3>{props.track.name}</h3>
-        <p>
-          {props.track.artist} | {props.track.album}
-        </p>
-      </div>
-      {renderAction()}
-    </div>
-  );
-};
-
-export default Track;
-*/
-
-import React, { useCallback, useRef, useState } from "react";
-import "./Track.css";
-
-const Track = (props) => {
-  const addTrack = useCallback(
-    (event) => {
-      props.onAdd(props.track);
-    },
-    [props.onAdd, props.track]
-  );
-
-  const removeTrack = useCallback(
-    (event) => {
-      props.onRemove(props.track);
-    },
-    [props.onRemove, props.track]
-  );
-
-  const renderAction = () => {
-    if (props.isRemoval) {
+    if (isRemoval) {
       return (
         <button className="Track-action" onClick={removeTrack}>
           -
@@ -112,21 +31,43 @@ const Track = (props) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  function handlePlayPreview(previewUrl) {
+  useEffect(() => {
+    if (currentlyPlaying !== track.id && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [currentlyPlaying, track.id]);
+
+  useEffect(() => {
+    if (currentSide !== props.side && currentlyPlaying === track.id) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [currentSide]);
+
+
+  const handlePlayPreview = () => {
     if (audioRef.current !== null) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
+        setCurrentlyPlaying(null);
       } else {
         audioRef.current.play();
+        setIsPlaying(true);
+        setCurrentlyPlaying(track.id);
+        setCurrentSide(props.side);
       }
-      setIsPlaying(!isPlaying);
     } else {
-      const audio = new Audio(previewUrl);
+      const audio = new Audio(track.previewUrl);
       audio.play();
       audioRef.current = audio;
       setIsPlaying(true);
+      setCurrentlyPlaying(track.id);
+      setCurrentSide(props.side);
     }
-  }
+
+  };
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -143,23 +84,23 @@ const Track = (props) => {
       onMouseLeave={handleMouseLeave}
     >
       <img
-        src={props.track.image}
-        alt={props.track.name}
+        src={track.image}
+        alt={track.name}
         height="50"
         width="50"
-        onClick={() => handlePlayPreview(props.track.previewUrl)}
+        onClick={handlePlayPreview}
         style={{ cursor: "pointer" }}
       />
       <div className="Track-information">
-        <h3>{props.track.name}</h3>
+        <h3>{track.name}</h3>
         <p>
-          {props.track.artist} | {props.track.album}
+          {track.artist} | {track.album}
         </p>
       </div>
       {(isHovered || isPlaying) && (
         <div
           className="Track-indicators"
-          onClick={() => handlePlayPreview(props.track.previewUrl)}
+          onClick={handlePlayPreview}
           style={{ cursor: "pointer" }}
         >
           {isPlaying ? (

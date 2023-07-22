@@ -8,7 +8,15 @@ const SearchResults = (props) => {
   return (
     <div className="SearchResults">
       <h2>Results</h2>
-      <TrackList tracks={props.searchResults} onAdd={props.onAdd} />
+      <TrackList 
+        tracks={props.searchResults} 
+        onAdd={props.onAdd} 
+        currentlyPlaying={props.currentlyPlaying}
+        setCurrentlyPlaying={props.setCurrentlyPlaying}
+        currentSide={props.currentSide}
+        setCurrentSide={props.setCurrentSide}
+        side={'SearchResults'}
+      />
     </div>
   );
 };

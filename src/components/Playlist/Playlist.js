@@ -19,6 +19,11 @@ const Playlist = (props) => {
         tracks={props.playlistTracks}
         isRemoval={true}
         onRemove={props.onRemove}
+        currentlyPlaying={props.currentlyPlaying}
+        setCurrentlyPlaying={props.setCurrentlyPlaying}
+        currentSide={props.currentSide}
+        setCurrentSide={props.setCurrentSide}
+        side={'Playlist'}
       />
       <button className="Playlist-save" onClick={props.onSave}>
         SAVE TO SPOTIFY

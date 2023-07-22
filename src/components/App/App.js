@@ -43,6 +43,9 @@ const App = () => {
     });
   }, [playlistName, playlistTracks]);
 
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
+  const [currentSide, setCurrentSide] = useState(null);
+
   return (
     <div>
       <h1>
@@ -51,13 +54,24 @@ const App = () => {
       <div className="App">
         <SearchBar onSearch={search} />
         <div className="App-playlist">
-          <SearchResults searchResults={searchResults} onAdd={addTrack} />
+          <SearchResults 
+            searchResults={searchResults} 
+            onAdd={addTrack}
+            currentlyPlaying={currentlyPlaying}
+            setCurrentlyPlaying={setCurrentlyPlaying} 
+            currentSide={currentSide}
+            setCurrentSide={setCurrentSide}
+          />
           <Playlist
             playlistName={playlistName}
             playlistTracks={playlistTracks}
             onNameChange={updatePlaylistName}
             onRemove={removeTrack}
             onSave={savePlaylist}
+            currentlyPlaying={currentlyPlaying}
+            setCurrentlyPlaying={setCurrentlyPlaying}
+            currentSide={currentSide}
+            setCurrentSide={setCurrentSide}
           />
         </div>
       </div>
